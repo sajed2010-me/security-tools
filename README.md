@@ -10,3 +10,11 @@ This first tool provides headers that might be of use for pentesters, i will hop
   - Added severity classes that can be useful for security auditors to prioritize findings.
 
   Thank you very much for taking the time to check out this very humble project.
+## Changelog
+
+- **2nd upddate (1st-tool.py - 01/04/2026)**
+   Added more improvements:
+   - Mostly user input checks to make sure URL is valid with some fun messages
+   - debugged some errors and struggled for a bit haha
+  I will work on improving the CLI UX tomorrow and will add new features if god wills
+   Thank you very much for taking the time to check out this very humble project. 
