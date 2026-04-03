@@ -9,15 +9,15 @@ This first tool provides headers that might be of use for pentesters, i will hop
   - Handles timeouts and connection errors when a request takes too long or fails.
   - Added severity classes that can be useful for security auditors to prioritize findings.
 
-  Thank you very much for taking the time to check out this very humble project.
+Thank you very much for taking the time to check out this very humble project.
 ## Changelog
 
 - **2nd update (1st-tool.py - 01/04/2026)**
    Added more improvements:
    - Mostly user input checks to make sure URL is valid with some fun messages
    - debugged some errors and struggled for a bit haha
-  I will work on improving the CLI UX tomorrow and will add new features if god wills.
-   Thank you very much for taking the time to check out this very humble project.
+I will work on improving the CLI UX tomorrow and will add new features if god wills.
+Thank you very much for taking the time to check out this very humble project.
 
 ## Changelog
 
@@ -26,5 +26,5 @@ This first tool provides headers that might be of use for pentesters, i will hop
   - Expanded the headers list so it contains more add-worthy headers
   - Added severity ratings so the user could be more aware
   - Changed how the CLI UX looks, simple yet much better in my opinion, very visually satisfying in my opinion
-  I will work on adding more functional features relative to the job itself tomorrow if god wills.
-  Thank you very much for taking the time to check out this very humble project.
+I will work on adding more functional features relative to the job itself tomorrow if god wills.
+Thank you very much for taking the time to check out this very humble project.
