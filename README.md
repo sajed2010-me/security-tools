@@ -18,6 +18,7 @@ This first tool provides headers that might be of use for pentesters, i will hop
    - debugged some errors and struggled for a bit haha
      
 -I will work on improving the CLI UX tomorrow and will add new features if god wills.
+
 -Thank you very much for taking the time to check out this very humble project.
 
 ## Changelog
@@ -29,4 +30,5 @@ This first tool provides headers that might be of use for pentesters, i will hop
   - Changed how the CLI UX looks, simple yet much better in my opinion, very visually satisfying in my opinion
     
 -I will work on adding more functional features relative to the job itself tomorrow if god wills.
+
 -Thank you very much for taking the time to check out this very humble project.
