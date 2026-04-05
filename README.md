@@ -23,7 +23,7 @@ This first tool provides headers that might be of use for pentesters, i will hop
 
 ## Changelog
 
-- **3rd update (1st-tool.py - 02/04/2027)**
+- **3rd update (1st-tool.py - 02/04/2026)**
   Added more improvements:
   - Expanded the headers list so it contains more add-worthy headers
   - Added severity ratings so the user could be more aware
@@ -32,3 +32,14 @@ This first tool provides headers that might be of use for pentesters, i will hop
 -I will work on adding more functional features relative to the job itself tomorrow if god wills.
 
 -Thank you very much for taking the time to check out this very humble project.
+
+## Changelog
+
+- **3rd update (1st-tool.py - 05/04/2026)**
+  Added more improvements:
+  - Added file uploading option so it can identify and scan urls in the provided file
+  - Changed the CLI UX a bit
+
+- I will work on adding more features tomorrow if god wills, sadly i didn't commit the past two days due to some stuff and i faced a lot of bugs, i will explore more amazing features to add and work on them and will improve my skills trying to the extent of my abilities.
+
+- Thank you very much for taking the time to check out this very humble project, I appreciate it a lot!!
