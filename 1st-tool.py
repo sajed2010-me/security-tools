@@ -1,25 +1,60 @@
 import requests
-target_url = str(input('Insert full correct Url (including http:// or https://) Please: '))
+import os.path
 while True:
-    # noinspection PyUnusedLocal,PyRedeclaration
-    cleaned = target_url.strip() #used in if conditions below
-    if ' ' in cleaned:
-        print('There may be an extra space in the URL, please remove it.')
-        target_url = str(input('Insert full correct Url: '))
-        cleaned = target_url.strip()
-        continue
-    if cleaned == '':
-        print('Where is the URL!')
-        target_url = str(input('Insert full correct Url, pretty please: '))
-        cleaned = target_url.strip()
-        continue
-    if not cleaned.startswith(('http://', 'https://')):
-        print('You still forgot the scheme or a part of it  (http:// or https://)! The URL you entered is not a valid URL.')
-        target_url = str(input('Insert full correct Url (WITH http:// or https://): '))
-        cleaned = target_url.strip()
-        continue
+    choice = str(input("Do you wish to upload a file or input link(f/l): ")).lower()
+    if choice == "l":
+        target_url = str(input('Insert full correct Url (including http:// or https://) Please: '))
+        while True:
+        # noinspection PyUnusedLocal,PyRedeclaration
+            cleaned = target_url.strip() #used in if conditions below
+            if ' ' in cleaned:
+                print('There may be an extra space in the URL, please remove it.')
+                target_url = str(input('Insert full correct Url: '))
+                cleaned = target_url.strip()
+                continue
+            if cleaned == '':
+                print('Where is the URL!')
+                target_url = str(input('Insert full correct Url, pretty please: '))
+                cleaned = target_url.strip()
+                continue
+            if not cleaned.startswith(('http://', 'https://')):
+                print('You still forgot the scheme or a part of it  (http:// or https://)! The URL you entered is not a valid URL.')
+                target_url = str(input('Insert full correct Url (WITH http:// or https://): '))
+                cleaned = target_url.strip()
+                continue
+            break
 
-    break
+        break
+
+    elif choice == "f":
+        file_name = str(input('Insert full correct File Path: '))
+        file_urls = []
+        while True:
+            if os.path.isfile(file_name):
+                with open(file_name) as content:
+                    for link in content:
+                        link = link.strip()
+                        if link.startswith(('http://', 'https://')):
+                            file_urls.append(link)
+
+
+                if len(file_urls) == 0:
+                    print('Sorry, looks like there were no urls in your file.')
+                    break
+            else:
+                file_name2 = str(input('Would you like to upload another file? (y/n): '))
+                if file_name2 == 'y':
+                    file_name = str(input('Ready to give this another try?(insert file): '))
+                    continue
+                else:
+                    break
+            break
+        break
+    else:
+        choice = str(input('Please choose either f for file upload or l for link(f/l): '))
+
+
+
 
 security_headers = {
     "Server": "reveals server info (usually identifies the web server software, e.g., Apache, Nginx)",
@@ -50,16 +85,27 @@ header_severity = {
 with requests.Session() as session:
     try:
         session.max_redirects = 15
-        response = session.get(cleaned, timeout=10)
-        print("==PRESENT HEADERS==")
-        for header in security_headers:
-            if header in response.headers:
-                print(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
-        print("==MISSING HEADERS==")
-        for header in security_headers:
-            if header not in response.headers:
-                print(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
-
+        if choice == "f":
+            for link in file_urls:
+                response = session.get(link, timeout=10)
+                print(f"==PRESENT HEADERS== in {link} ")
+                for header in security_headers:
+                    if header in response.headers:
+                        print(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+                print(f"== MISSING HEADERS== in {link}")
+                for header in security_headers:
+                    if header not in response.headers:
+                        print(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+        elif choice == "l":
+            response = session.get(cleaned, timeout=10)
+            print("==PRESENT HEADERS==")
+            for header in security_headers:
+                if header in response.headers:
+                    print(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+            print("==MISSING HEADERS==")
+            for header in security_headers:
+                if header not in response.headers:
+                    print(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
     except requests.exceptions.ConnectionError:
         print('Connection Error occurred.')
     except requests.exceptions.Timeout:
