@@ -1,4 +1,5 @@
 import requests
+from concurrent.futures import ThreadPoolExecutor
 import os.path
 while True:
     choice = str(input("Do you wish to upload a file or input link(f/l): ")).lower()
@@ -42,6 +43,7 @@ while True:
                     print('Sorry, looks like there were no urls in your file.')
                     break
             else:
+                print('Sorry, file not found.')
                 file_name2 = str(input('Would you like to upload another file? (y/n): '))
                 if file_name2 == 'y':
                     file_name = str(input('Ready to give this another try?(insert file): '))
@@ -86,16 +88,19 @@ with requests.Session() as session:
     try:
         session.max_redirects = 15
         if choice == "f":
-            for link in file_urls:
-                response = session.get(link, timeout=10)
-                print(f"==PRESENT HEADERS== in {link} ")
-                for header in security_headers:
-                    if header in response.headers:
-                        print(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
-                print(f"== MISSING HEADERS== in {link}")
-                for header in security_headers:
-                    if header not in response.headers:
-                        print(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+            with ThreadPoolExecutor(max_workers=100) as executor:
+                responses = executor.map(lambda url:session.get(url, timeout=10), file_urls)
+                for response, link in zip(responses, file_urls):
+                    result = response.status_code
+                    print(f'Status code is: {result}')
+                    print(f"==PRESENT HEADERS== in {link} ")
+                    for header in security_headers:
+                        if header in response.headers:
+                            print(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+                    print(f"== MISSING HEADERS== in {link}")
+                    for header in security_headers:
+                        if header not in response.headers:
+                            print(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
         elif choice == "l":
             response = session.get(cleaned, timeout=10)
             print("==PRESENT HEADERS==")
