@@ -57,3 +57,16 @@ This first tool provides headers that might be of use for pentesters, i will hop
 - Thank you very much for taking the time to check out this very humble project, I truly appreciate it!!
 
 
+## Changelog
+
+- **6th update (1st-tool.py - 07/04/2026)**
+  Added more improvements:
+  - Added a time taken output to calculate response time
+  - Added a file output feature where output of the tool is saved in a file. however, something that is very unlikely could happen which is if somebody had a file with the same name i assigned his original file will be overwritten. Maybe i will work on that tomorrow. 
+
+- I will add more improvements tomorrow if god wills, I'm learning more and more and with that comes the expansion of knowledge about how i can improve this tool, I will maybe create a new tool soon.
+
+- Thank you very much for taking the time to check out this very humble project, I truly appreciate it!!
+
+
+
