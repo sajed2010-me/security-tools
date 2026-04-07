@@ -1,6 +1,7 @@
 import requests
 from concurrent.futures import ThreadPoolExecutor
 import os.path
+import time
 while True:
     choice = str(input("Do you wish to upload a file or input link(f/l): ")).lower()
     if choice == "l":
@@ -54,6 +55,7 @@ while True:
         break
     else:
         choice = str(input('Please choose either f for file upload or l for link(f/l): '))
+        continue
 
 
 
@@ -86,35 +88,62 @@ header_severity = {
 }
 with requests.Session() as session:
     try:
+
         session.max_redirects = 15
         if choice == "f":
             with ThreadPoolExecutor(max_workers=100) as executor:
-                responses = executor.map(lambda url:session.get(url, timeout=10), file_urls)
-                for response, link in zip(responses, file_urls):
-                    result = response.status_code
-                    print(f'Status code is: {result}')
-                    print(f"==PRESENT HEADERS== in {link} ")
-                    for header in security_headers:
-                        if header in response.headers:
-                            print(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
-                    print(f"== MISSING HEADERS== in {link}")
-                    for header in security_headers:
-                        if header not in response.headers:
-                            print(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+                with open('recon_tool_results_file.txt', mode='w', encoding='utf-8') as file:
+
+                    responses = executor.map(lambda url:session.get(url, timeout=10), file_urls)
+                    start = time.time()
+
+
+                    for response, link in zip(responses, file_urls):
+                        end = time.time()
+                        time_taken = end - start
+                        result = response.status_code
+                        print(f'Status code is: {result}')
+                        file.write(f'Status code is: {result}\n')
+                        print(f"==PRESENT HEADERS== in {link} ")
+                        file.write(f"==PRESENT HEADERS== in {link}\n")
+                        for header in security_headers:
+                            if header in response.headers:
+                                print(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+                                file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+                        print(f"== MISSING HEADERS== in {link}")
+                        file.write(f"==MISSING HEADERS== in {link}\n")
+                        for header in security_headers:
+                            if header not in response.headers:
+                                print(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+                                file.write(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}\n')
+                        print(f'Time taken is: {time_taken} seconds')
+                        file.write(f'Time taken is: {time_taken} seconds\n')
         elif choice == "l":
-            response = session.get(cleaned, timeout=10)
-            print("==PRESENT HEADERS==")
-            for header in security_headers:
-                if header in response.headers:
-                    print(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
-            print("==MISSING HEADERS==")
-            for header in security_headers:
-                if header not in response.headers:
-                    print(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+            with open('recon_tool_results_link.txt', mode='w', encoding='utf-8') as file:
+                start = time.time()
+                response = session.get(cleaned, timeout=10)
+                print(f"==PRESENT HEADERS== in {cleaned} ")
+                file.write(f"==PRESENT HEADERS== in {cleaned}\n")
+                end = time.time()
+                time_taken = end - start
+                for header in security_headers:
+                    if header in response.headers:
+                        print(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+                        file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+                print(f"==MISSING HEADERS== in {cleaned} ")
+                file.write(f"==MISSING HEADERS== in {cleaned}\n")
+                for header in security_headers:
+                    if header not in response.headers:
+                        print(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+                        file.write(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}\n')
+                print(f'Time taken is: {time_taken} seconds')
+                file.write(f'Time taken is: {time_taken} seconds\n')
     except requests.exceptions.ConnectionError:
         print('Connection Error occurred.')
     except requests.exceptions.Timeout:
         print('Connection Timeout occurred.')
     except requests.exceptions.InvalidURL:
         print('Invalid URL, Please make sure url is correct.')
+    except KeyboardInterrupt:
+        print('Action interrupted.')
          
