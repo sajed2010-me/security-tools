@@ -69,4 +69,16 @@ This first tool provides headers that might be of use for pentesters, i will hop
 - Thank you very much for taking the time to check out this very humble project, I truly appreciate it!!
 
 
+## Changelog
+
+- **7th update (1st-tool.py - 08/04/2026)**
+  Added more improvements:
+  - Sadly, I only added one feature today cause time wasn't on my side, the feature is coloring for severity, the output now looks much more satisfying to the eye.
+  - blue is low severity, medium and low/medium is yellow and high severity is of course red and green is used for good present headers but bad present are colored according to severity. 
+
+- I will add more improvements tomorrow if god wills, hopefully time will be on my side tomorrow and i will add better features if god wills.
+
+- Thank you very much for taking the time to check out this very humble project, I truly appreciate it!!
+
+
 
