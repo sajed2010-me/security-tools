@@ -2,6 +2,8 @@ import requests
 from concurrent.futures import ThreadPoolExecutor
 import os.path
 import time
+from colorama import Fore, Back, Style, init
+init(autoreset=True)
 while True:
     choice = str(input("Do you wish to upload a file or input link(f/l): ")).lower()
     if choice == "l":
@@ -108,14 +110,28 @@ with requests.Session() as session:
                         file.write(f"==PRESENT HEADERS== in {link}\n")
                         for header in security_headers:
                             if header in response.headers:
-                                print(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
-                                file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+                                if header == 'Server' or header == 'X-Powered-By':
+                                    print(Fore.BLUE + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+                                    file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+                                else:
+                                    print(Fore.GREEN + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+                                    file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
                         print(f"== MISSING HEADERS== in {link}")
                         file.write(f"==MISSING HEADERS== in {link}\n")
                         for header in security_headers:
                             if header not in response.headers:
-                                print(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
-                                file.write(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}\n')
+                                if header_severity[header] == 'Severity: Low':
+                                    print(Fore.BLUE + Style.BRIGHT + f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+                                    file.write(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}\n')
+                                elif header_severity[header] == 'Severity: Medium':
+                                    print(Fore.YELLOW + Style.BRIGHT + f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+                                    file.write(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}\n')
+                                elif header_severity[header] == 'Severity: High':
+                                    print(Fore.RED + Style.BRIGHT + f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+                                    file.write(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+                                elif header_severity[header] == 'Severity: Low/Medium':
+                                    print(Fore.YELLOW + Style.BRIGHT + f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+                                    file.write(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}\n')
                         print(f'Time taken is: {time_taken} seconds')
                         file.write(f'Time taken is: {time_taken} seconds\n')
         elif choice == "l":
@@ -128,14 +144,31 @@ with requests.Session() as session:
                 time_taken = end - start
                 for header in security_headers:
                     if header in response.headers:
-                        print(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
-                        file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+                        if header == 'Server' or header == 'X-Powered-By':
+                            print(Fore.BLUE + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+                            file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+                        else:
+                            print(Fore.GREEN + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+                            file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+
+
                 print(f"==MISSING HEADERS== in {cleaned} ")
                 file.write(f"==MISSING HEADERS== in {cleaned}\n")
                 for header in security_headers:
                     if header not in response.headers:
-                        print(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
-                        file.write(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}\n')
+                        if header_severity[header] == 'Severity: Low':
+                            print(Fore.BLUE + Style.BRIGHT + f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+                            file.write(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}\n')
+                        elif header_severity[header] == 'Severity: Medium':
+                            print(Fore.YELLOW + Style.BRIGHT + f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+                            file.write(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}\n')
+                        elif header_severity[header] == 'Severity: High':
+                            print(Fore.RED + Style.BRIGHT + f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+                            file.write(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+                        elif header_severity[header] == 'Severity: Low/Medium':
+                            print(Fore.YELLOW + Style.BRIGHT + f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}')
+                            file.write(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}\n')
+
                 print(f'Time taken is: {time_taken} seconds')
                 file.write(f'Time taken is: {time_taken} seconds\n')
     except requests.exceptions.ConnectionError:
