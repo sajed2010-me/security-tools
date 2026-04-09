@@ -80,5 +80,10 @@ This first tool provides headers that might be of use for pentesters, i will hop
 
 - Thank you very much for taking the time to check out this very humble project, I truly appreciate it!!
 
+## Changelog 
 
+- **8th update (1st-tool.py - 09/04/2026)**
+  Added a very tiny improvement today sadly. I was tired today so i added just a small improvement which was literally a line of code to separate urls.
 
+- I will add more improvements tomorrow if god wills, much better than today's of course, i didn't want to repeat the mistake of not updating at all, so a small improvement is way better than no improvements.  
+- Thank you very much for taking the time to check out this very humble project, I truly appreciate it!!
