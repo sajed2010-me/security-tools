@@ -134,6 +134,8 @@ with requests.Session() as session:
                                     file.write(f'{header}({header_severity[header]}) is MISSING: {security_headers[header]}\n')
                         print(f'Time taken is: {time_taken} seconds')
                         file.write(f'Time taken is: {time_taken} seconds\n')
+                        print('-' * 50)
+                        file.write('-' * 50 + '\n')
         elif choice == "l":
             with open('recon_tool_results_link.txt', mode='w', encoding='utf-8') as file:
                 start = time.time()
