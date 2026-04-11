@@ -87,3 +87,17 @@ This first tool provides headers that might be of use for pentesters, i will hop
 
 - I will add more improvements tomorrow if god wills, much better than today's of course, i didn't want to repeat the mistake of not updating at all, so a small improvement is way better than no improvements.  
 - Thank you very much for taking the time to check out this very humble project, I truly appreciate it!!
+
+## Changelog
+
+- **9th update (1st-tool.py - 11/04/2026)**
+  Added new improvements:
+  - Now the tool can check for specific known CVE versions of the 'Server' header to tell you it's vulnerable or the 'X-Powered-by' header
+  - A built in migraine from the indentation
+
+- I'm very happy with this update, it's beginning to feel like an actual recon tool.
+- Of course i will work on more updates and features if god wills.
+
+- Thank you very much for taking the time to check out this very humble project, I truly appreciate it!!
+  
+
