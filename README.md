@@ -91,6 +91,7 @@ This first tool provides headers that might be of use for pentesters, i will hop
 ## Changelog
 
 - **9th update (1st-tool.py - 11/04/2026)**
+
   Added new improvements:
   - Now the tool can check for specific known CVE versions of the 'Server' header to tell you it's vulnerable or the 'X-Powered-by' header
   - A built in migraine from the indentation
