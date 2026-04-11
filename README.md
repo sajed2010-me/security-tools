@@ -93,7 +93,7 @@ This first tool provides headers that might be of use for pentesters, i will hop
 - **9th update (1st-tool.py - 11/04/2026)**
 
   Added new improvements:
-  - Now the tool can check for specific known CVE versions of the 'Server' header to tell you it's vulnerable or the 'X-Powered-by' header
+  - Now the tool can check for specific known CVE versions of the 'Server' header output used by the website like Apache or nginx to tell you it's vulnerable or the 'X-Powered-by' header (PHP only currently)
   - A built in migraine from the indentation
 
 - I'm very happy with this update, it's beginning to feel like an actual recon tool.
