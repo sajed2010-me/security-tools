@@ -2,12 +2,13 @@ import requests
 from concurrent.futures import ThreadPoolExecutor
 import os.path
 import time
-from colorama import Fore, Back, Style, init
+from colorama import Fore, Style, init
+from packaging.version import Version
 init(autoreset=True)
 while True:
     choice = str(input("Do you wish to upload a file or input link(f/l): ")).lower()
     if choice == "l":
-        target_url = str(input('Insert full correct Url (including http:// or https://) Please: '))
+        target_url = str(input('Insert full correct Url (including http:// or https://) Please: ')).strip("")
         while True:
         # noinspection PyUnusedLocal,PyRedeclaration
             cleaned = target_url.strip() #used in if conditions below
@@ -88,6 +89,10 @@ header_severity = {
     'Cross-Origin-Resource-Policy': 'Severity: Medium',
     'Cross-Origin-Embedder-Policy': 'Severity: Low/Medium'
 }
+vuln_check = {'Apache':[("2.4.17", "2.4.63", "CVE-2025-53020 - DoS via HTTP/2 memory exhaustion")],
+              'PHP': [("8.3.0", "8.3.8", "CVE-2024-4577 - Critical RCE"), ("8.2.0", "8.2.20", "CVE-2024-4577 - Critical RCE"), ("8.1.0", "8.1.29", "CVE-2024-4577 - Critical RCE")],
+              'nginx':[("0.5.13", "1.29.6", "CVE-2026-27654 - Buffer overflow in ngx_http_dav_module"),("1.25.0", "1.25.5", "CVE-2024-24989 - NULL dereference via HTTP/3")]
+              }
 with requests.Session() as session:
     try:
 
@@ -111,8 +116,30 @@ with requests.Session() as session:
                         for header in security_headers:
                             if header in response.headers:
                                 if header == 'Server' or header == 'X-Powered-By':
-                                    print(Fore.BLUE + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
-                                    file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+                                    header_split = response.headers[header].split('/')
+                                    if len(header_split) > 1:
+                                        if header_split[0] == 'Apache' or header_split[0] == 'PHP' or header_split[0] == 'nginx':
+                                            for min_version, max_version , cve in vuln_check[header_split[0]]:
+                                                if Version(min_version) <= Version(header_split[1].split(' ')[0]) <= Version(max_version):
+                                                    clean_version = Version(header_split[1].split(' ')[0])
+                                                    print(Fore.YELLOW + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}(VULNERABLE VERSION {clean_version}! {cve} ')
+                                                    file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}(VULNERABLE VERSION {clean_version}! {cve} \n')
+                                                    break
+                                                else:
+                                                    print(Fore.BLUE + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+                                                    file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+
+                                        else:
+                                            print(Fore.GREEN + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+                                            file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+
+                                    else:
+                                        print(Fore.GREEN + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+                                        file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+
+
+
+
                                 else:
                                     print(Fore.GREEN + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
                                     file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
@@ -147,11 +174,31 @@ with requests.Session() as session:
                 for header in security_headers:
                     if header in response.headers:
                         if header == 'Server' or header == 'X-Powered-By':
-                            print(Fore.BLUE + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
-                            file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+                            header_split = response.headers[header].split('/')
+                            if len(header_split) > 1:
+                                if header_split[0] == 'Apache' or header_split[0] == 'PHP' or header_split[0] == 'nginx':
+                                    for min_version, max_version, cve in vuln_check[header_split[0]]:
+                                        if Version(min_version) <= Version(header_split[1].split(' ')[0]) <= Version(max_version):
+                                            clean_version = Version(header_split[1].split(' ')[0])
+                                            print(Fore.YELLOW + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}(VULNERABLE VERSION {clean_version}! {cve} ')
+                                            file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}(VULNERABLE VERSION {clean_version}! {cve} \n')
+                                            break
+                                        else:
+                                            print(Fore.BLUE + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+                                            file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+                                else:
+                                    print(Fore.GREEN + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+                                    file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+                            else:
+                                print(Fore.GREEN + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+                                file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+
+
+
                         else:
                             print(Fore.GREEN + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
                             file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+
 
 
                 print(f"==MISSING HEADERS== in {cleaned} ")
@@ -173,6 +220,7 @@ with requests.Session() as session:
 
                 print(f'Time taken is: {time_taken} seconds')
                 file.write(f'Time taken is: {time_taken} seconds\n')
+
     except requests.exceptions.ConnectionError:
         print('Connection Error occurred.')
     except requests.exceptions.Timeout:
