@@ -183,9 +183,9 @@ with requests.Session() as session:
                                             print(Fore.YELLOW + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}(VULNERABLE VERSION {clean_version}! {cve} ')
                                             file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}(VULNERABLE VERSION {clean_version}! {cve} \n')
                                             break
-                                        else:
-                                            print(Fore.BLUE + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
-                                            file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
+                                    else:
+                                        print(Fore.BLUE + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
+                                        file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
                                 else:
                                     print(Fore.GREEN + Style.BRIGHT + f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}')
                                     file.write(f'{header}({header_severity[header]}) is PRESENT: {response.headers[header]}\n')
